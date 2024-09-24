@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+const int maxcapacity=2;
+int occupiedspace,change,ticketspecifiedspot,carparkingspace;
+bool cash,card;
+chan sensepark,ticket,parkingticket,insertcard,insertmoney,payment,payfailed,check;
+clock time,validtime;
+bool carspots[2] = { false, false};
+chan performpark[2], entrycompleted[2],performunpark[2],exitcompleted[2],alert[2],finepaid[2];
+urgent chan leftparking[2];</declaration>
+	<template>
+		<name>entry</name>
+		<parameter>const int parkingid</parameter>
+		<declaration>clock timeentry;
+</declaration>
+		<location id="id0" x="-34" y="0">
+			<name x="-44" y="-34">closedgate</name>
+			<label kind="testcodeEnter">timeentry = 0</label>
+		</location>
+		<location id="id1" x="246" y="0">
+			<name x="236" y="-34">gateopening</name>
+			<label kind="testcodeEnter">timeentry = 0</label>
+		</location>
+		<location id="id2" x="93" y="93">
+			<name x="51" y="110">gateopened</name>
+		</location>
+		<init ref="id0"/>
+		<transition id="id3">
+			<source ref="id2"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-153" y="42">timeentry&gt;=5</label>
+			<label kind="synchronisation" x="-255" y="68">entrycompleted[parkingid]!</label>
+			<nail x="-34" y="93"/>
+		</transition>
+		<transition id="id4">
+			<source ref="id1"/>
+			<target ref="id2"/>
+			<nail x="246" y="93"/>
+		</transition>
+		<transition id="id5">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="0" y="8">performpark[parkingid]?</label>
+			<nail x="127" y="0"/>
+		</transition>
+	</template>
+	<template>
+		<name>exitparking</name>
+		<parameter>const int parkingid</parameter>
+		<declaration>clock timeexit;</declaration>
+		<location id="id6" x="246" y="136">
+			<name x="204" y="153">gateopened</name>
+			<label kind="testcodeEnter">timeexit=0</label>
+		</location>
+		<location id="id7" x="110" y="25">
+			<name x="100" y="-9">closedgate</name>
+			<label kind="testcodeEnter">timeexit=0</label>
+		</location>
+		<location id="id8" x="391" y="25">
+			<name x="381" y="-9">gateopening</name>
+			<label kind="testcodeEnter">timeexit=0</label>
+		</location>
+		<init ref="id7"/>
+		<transition id="id9">
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<label kind="guard" x="0" y="76">timeexit&gt;=5</label>
+			<label kind="synchronisation" x="-102" y="102">exitcompleted[parkingid]!</label>
+			<label kind="assignment" x="-42" y="127">occupiedspace-=1</label>
+			<nail x="110" y="136"/>
+		</transition>
+		<transition id="id10">
+			<source ref="id8"/>
+			<target ref="id6"/>
+			<nail x="391" y="136"/>
+		</transition>
+		<transition id="id11">
+			<source ref="id7"/>
+			<target ref="id8"/>
+			<label kind="synchronisation" x="153" y="8">performunpark[parkingid]?</label>
+			<nail x="280" y="25"/>
+		</transition>
+	</template>
+	<template>
+		<name>Payment</name>
+		<location id="id12" x="-221" y="-170">
+			<name x="-357" y="-195">notprocessing</name>
+		</location>
+		<location id="id13" x="25" y="-170">
+			<name x="51" y="-187">paymentprocessing</name>
+		</location>
+		<location id="id14" x="-102" y="-85">
+			<name x="-128" y="-68">returnchange</name>
+		</location>
+		<init ref="id12"/>
+		<transition id="id15">
+			<source ref="id13"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-85" y="-42">cash==true &amp;&amp; change == 0</label>
+			<label kind="synchronisation" x="-203" y="-26">payment!</label>
+			<nail x="25" y="-9"/>
+			<nail x="-221" y="-9"/>
+		</transition>
+		<transition id="id16">
+			<source ref="id13"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-221" y="110">(card == true &amp;&amp; cash == false) || (card == false &amp;&amp; cash == true)</label>
+			<label kind="synchronisation" x="-162" y="76">payfailed!</label>
+			<label kind="assignment" x="-323" y="59">card=false,
+cash=false,
+change=0</label>
+			<nail x="25" y="102"/>
+			<nail x="-221" y="102"/>
+		</transition>
+		<transition id="id17">
+			<source ref="id13"/>
+			<target ref="id12"/>
+			<label kind="guard" x="-94" y="25">card==true</label>
+			<label kind="synchronisation" x="-204" y="26">payment!</label>
+			<nail x="25" y="51"/>
+			<nail x="-221" y="51"/>
+		</transition>
+		<transition id="id18">
+			<source ref="id14"/>
+			<target ref="id12"/>
+			<label kind="synchronisation" x="-212" y="-110">payment!</label>
+			<label kind="assignment" x="-203" y="-85">change=0</label>
+			<nail x="-221" y="-85"/>
+		</transition>
+		<transition id="id19">
+			<source ref="id13"/>
+			<target ref="id14"/>
+			<label kind="guard" x="-85" y="-127">cash==true &amp;&amp; change != 0</label>
+			<nail x="25" y="-85"/>
+		</transition>
+		<transition id="id20">
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="synchronisation" x="-187" y="-280">insertcard?</label>
+			<label kind="assignment" x="-187" y="-263">card=true</label>
+			<nail x="-221" y="-263"/>
+			<nail x="25" y="-263"/>
+		</transition>
+		<transition id="id21">
+			<source ref="id12"/>
+			<target ref="id13"/>
+			<label kind="select" x="-179" y="-221">i : int[0,50]</label>
+			<label kind="synchronisation" x="-153" y="-195">insertmoney?</label>
+			<label kind="assignment" x="-170" y="-170">cash=true,
+change=i</label>
+		</transition>
+	</template>
+	<template>
+		<name x="5" y="5">getTicket</name>
+		<declaration>// Place local declarations here
+</declaration>
+		<location id="id22" x="-9" y="179">
+			<name x="-161" y="195">CheckAvailability</name>
+		</location>
+		<location id="id23" x="297" y="179">
+			<name x="306" y="144">Nopayment</name>
+			<label kind="testcodeEnter">validtime=0</label>
+		</location>
+		<location id="id24" x="586" y="179">
+			<name x="603" y="170">Inprocess</name>
+			<label kind="testcodeEnter">time=0</label>
+		</location>
+		<location id="id25" x="586" y="-178">
+			<name x="551" y="-212">ticket</name>
+			<label kind="testcodeEnter">time=0;</label>
+		</location>
+		<location id="id26" x="586" y="17">
+			<name x="476" y="8">paymentdone</name>
+		</location>
+		<location id="id27" x="-212" y="178">
+			<name x="-255" y="144">idle</name>
+		</location>
+		<init ref="id27"/>
+		<transition id="id28">
+			<source ref="id27"/>
+			<target ref="id22"/>
+			<label kind="synchronisation" x="-194" y="161">check?</label>
+		</transition>
+		<transition id="id29">
+			<source ref="id24"/>
+			<target ref="id26"/>
+			<label kind="synchronisation" x="595" y="59">payment?</label>
+		</transition>
+		<transition id="id30">
+			<source ref="id24"/>
+			<target ref="id23"/>
+			<label kind="synchronisation" x="340" y="85">payfailed?</label>
+			<label kind="assignment" x="433" y="85">validtime:=0</label>
+			<nail x="586" y="110"/>
+			<nail x="297" y="110"/>
+		</transition>
+		<transition id="id31">
+			<source ref="id23"/>
+			<target ref="id24"/>
+			<label kind="synchronisation" x="365" y="221">insertcard!</label>
+			<nail x="297" y="246"/>
+			<nail x="586" y="246"/>
+		</transition>
+		<transition id="id32">
+			<source ref="id25"/>
+			<target ref="id27"/>
+			<label kind="guard" x="85" y="-170">time&gt;10</label>
+			<nail x="-212" y="-178"/>
+			<nail x="-212" y="68"/>
+		</transition>
+		<transition id="id33">
+			<source ref="id23"/>
+			<target ref="id22"/>
+			<label kind="guard" x="51" y="298">validtime&gt;300</label>
+			<nail x="144" y="281"/>
+			<nail x="-8" y="281"/>
+		</transition>
+		<transition id="id34">
+			<source ref="id26"/>
+			<target ref="id25"/>
+			<label kind="select" x="467" y="-59">i : int [0,1]</label>
+			<label kind="guard" x="595" y="-161">carspots[i] != true</label>
+			<label kind="synchronisation" x="459" y="-85">parkingticket!</label>
+			<label kind="assignment" x="603" y="-136">time:=0,
+ticketspecifiedspot=i,
+card=false,
+cash=false,
+carspots[i] = true,
+occupiedspace+=1</label>
+		</transition>
+		<transition id="id35">
+			<source ref="id23"/>
+			<target ref="id24"/>
+			<label kind="synchronisation" x="382" y="153">insertmoney!</label>
+		</transition>
+		<transition id="id36">
+			<source ref="id22"/>
+			<target ref="id23"/>
+			<label kind="guard" x="25" y="153">occupiedspace&lt;maxcapacity</label>
+			<label kind="assignment" x="76" y="179">validtime:=0</label>
+		</transition>
+	</template>
+	<template>
+		<name>fine</name>
+		<parameter>int parkingid</parameter>
+		<location id="id37" x="-187" y="-136">
+			<name x="-230" y="-170">nofine</name>
+		</location>
+		<location id="id38" x="34" y="-136">
+			<name x="24" y="-170">timeexceeded</name>
+		</location>
+		<init ref="id37"/>
+		<transition id="id39">
+			<source ref="id38"/>
+			<target ref="id37"/>
+			<label kind="synchronisation" x="-161" y="-76">finepaid[parkingid]!</label>
+			<nail x="34" y="-51"/>
+			<nail x="-187" y="-50"/>
+		</transition>
+		<transition id="id40">
+			<source ref="id37"/>
+			<target ref="id38"/>
+			<label kind="synchronisation" x="-153" y="-161">alert[parkingid]?</label>
+		</transition>
+	</template>
+	<template>
+		<name>Car</name>
+		<declaration>int carticket,currposition;
+clock wait;
+bool parked;
+
+
+
+</declaration>
+		<location id="id41" x="-195" y="-178">
+			<name x="-205" y="-212">start</name>
+		</location>
+		<location id="id42" x="110" y="-178">
+			<name x="102" y="-161">findParkingSpot</name>
+		</location>
+		<location id="id43" x="450" y="8">
+			<name x="467" y="0">park</name>
+			<label kind="testcodeEnter">wait=0</label>
+		</location>
+		<location id="id44" x="-178" y="8">
+			<name x="-211" y="25">exitgate</name>
+		</location>
+		<location id="id45" x="450" y="119">
+			<name x="441" y="136">block</name>
+		</location>
+		<location id="id46" x="450" y="-178">
+			<name x="459" y="-203">parking</name>
+		</location>
+		<location id="id47" x="161" y="8">
+			<name x="151" y="-26">exiting</name>
+		</location>
+		<location id="id48" x="161" y="119">
+			<name x="127" y="136">finecleared</name>
+		</location>
+		<location id="id49" x="-331" y="-178">
+			<name x="-341" y="-212">idle</name>
+		</location>
+		<init ref="id49"/>
+		<transition id="id50">
+			<source ref="id49"/>
+			<target ref="id41"/>
+			<label kind="synchronisation" x="-297" y="-203">check!</label>
+		</transition>
+		<transition id="id51">
+			<source ref="id48"/>
+			<target ref="id47"/>
+			<label kind="synchronisation" x="170" y="68">performunpark[carticket]!</label>
+		</transition>
+		<transition id="id52">
+			<source ref="id44"/>
+			<target ref="id49"/>
+			<nail x="-331" y="8"/>
+		</transition>
+		<transition id="id53">
+			<source ref="id47"/>
+			<target ref="id44"/>
+			<label kind="synchronisation" x="-102" y="-17">exitcompleted[carticket]?</label>
+			<label kind="assignment" x="-93" y="17">wait:=0,
+parked=false,
+carspots[carticket] = false</label>
+		</transition>
+		<transition id="id54">
+			<source ref="id46"/>
+			<target ref="id43"/>
+			<label kind="synchronisation" x="467" y="-93">entrycompleted[carticket]?</label>
+			<label kind="assignment" x="476" y="-144">parked=true,
+wait:=0</label>
+		</transition>
+		<transition id="id55">
+			<source ref="id43"/>
+			<target ref="id47"/>
+			<label kind="guard" x="246" y="-42">wait&lt;=60</label>
+			<label kind="synchronisation" x="204" y="-17">performunpark[carticket]!</label>
+		</transition>
+		<transition id="id56">
+			<source ref="id42"/>
+			<target ref="id42"/>
+			<label kind="select" x="68" y="-322">i : int [0,1]</label>
+			<label kind="guard" x="-8" y="-306">carticket!=currposition</label>
+			<label kind="assignment" x="42" y="-339">currposition=i</label>
+			<nail x="169" y="-280"/>
+			<nail x="33" y="-280"/>
+		</transition>
+		<transition id="id57">
+			<source ref="id45"/>
+			<target ref="id48"/>
+			<label kind="synchronisation" x="238" y="127">finepaid[carticket]?</label>
+			<label kind="assignment" x="280" y="102">wait:=0</label>
+			<nail x="280" y="119"/>
+		</transition>
+		<transition id="id58">
+			<source ref="id43"/>
+			<target ref="id45"/>
+			<label kind="guard" x="382" y="25">wait&gt;60</label>
+			<label kind="synchronisation" x="450" y="51">alert[carticket]!</label>
+		</transition>
+		<transition id="id59">
+			<source ref="id42"/>
+			<target ref="id46"/>
+			<label kind="guard" x="153" y="-212">carticket==currposition</label>
+			<label kind="synchronisation" x="187" y="-178">performpark[carticket]!</label>
+		</transition>
+		<transition id="id60">
+			<source ref="id41"/>
+			<target ref="id42"/>
+			<label kind="select" x="-102" y="-204">i : int [0,1]</label>
+			<label kind="synchronisation" x="-153" y="-178">parkingticket?</label>
+			<label kind="assignment" x="-187" y="-161">currposition=i,
+carticket=ticketspecifiedspot</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+pay = Payment();
+ticket1 =getTicket();
+car = Car();
+car1 = Car();
+fine0 = fine(0);
+fine1 = fine(1);
+fine2 = fine(2);
+fine3 = fine(3);
+fine4 = fine(4);
+entry0 = entry(0);
+entry1 = entry(1);
+entry2 = entry(2);
+entry3 = entry(3);
+entry4 = entry(4);
+exit0 = exitparking(0);
+exit1 = exitparking(1);
+exit2 = exitparking(2);
+exit3 = exitparking(3);
+exit4 = exitparking(4);
+// List one or more processes to be composed into a system.
+system ticket1,pay,car,car1,entry0,entry1,fine0,fine1,exit0,exit1;
+//,car2,car3,car4,car5,car6,car7,car8,car9,entry2,entry3, entry4,fine2,fine3,fine4,exit2,exit3,exit4</system>
+	<queries>
+		<option key="--diagnostic" value="0"/>
+		<query>
+			<formula>DEADLOCK</formula>
+			<comment/>
+		</query>
+		<query>
+			<formula>A[] not deadlock</formula>
+			<comment>This verifies that the system will never enter a state where no progress can be made.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:48:44 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] (occupiedspace == maxcapacity imply not deadlock)</formula>
+			<comment>The system cannot be in a deadlock state when the parking lot is full.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-19 00:00:54 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula>REACHIBILITTY</formula>
+			<comment/>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.block</formula>
+			<comment>This ensures that it's possible for a car to be fined</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:23 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car1.block</formula>
+			<comment>This ensures that it's possible for a car to be fined</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:49:59 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.park</formula>
+			<comment>This verifies that it's possible for a car to park, indicating a successful parking scenario.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:28 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car1.park</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:50:34 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.findParkingSpot</formula>
+			<comment>This confirms that the system allows cars to search for parking spots.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:32 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.parking</formula>
+			<comment>This ensures that cars can initiate the parking process after findind the parking spot.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:36 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.exiting</formula>
+			<comment>This ensures that cars can initiate the exiting process after parking.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:41 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.exitgate</formula>
+			<comment>This checks if cars can reach the exit gate after exiting.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:44 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.finecleared</formula>
+			<comment>This checks if cars can reach the finelceared state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:48 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;car.start</formula>
+			<comment>Checks if the car is able to be at the starting state</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:20:51 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;fine1.nofine</formula>
+			<comment>This checks if the nofine state can be reached in the fine automata</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:00 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;fine1.timeexceeded</formula>
+			<comment>This checks if the timeexceeded state can be reached in the fine automata</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:03 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;ticket1.CheckAvailability</formula>
+			<comment>Checks if the user is able to check for space in the system</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:00:24 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;ticket1.Nopayment</formula>
+			<comment>verifies that there is at least one possible scenario where the payment process reaches the "Nopayment" state</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:00:29 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;ticket1.Inprocess</formula>
+			<comment>It is possible to reach the 'Inprocess' state in the payment process.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:00:34 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;ticket1.ticket</formula>
+			<comment>it checks if a ticket can be issued eventually.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:00:37 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;ticket1.paymentdone</formula>
+			<comment>it checks if a payment is done eventually.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:01:07 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;pay.notprocessing</formula>
+			<comment>checks if notprocessing state is acheieved in the payment automata</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:01:10 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;pay.paymentprocessing</formula>
+			<comment>sees if paymentprocessing is done eventually</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:01:19 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;pay.returnchange</formula>
+			<comment>It is possible for the payment process to reach the state where change is returned to the user.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 20:01:14 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;entry1.closedgate</formula>
+			<comment>It is possible for the entry gate to eventually reach the closed state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:26 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;exit1.closedgate</formula>
+			<comment>It is possible for the exit gate to eventually reach the closed state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:29 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;entry1.gateopening</formula>
+			<comment>It is possible for the entry gate to eventually reach the gateopening state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:39 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;exit1.gateopening</formula>
+			<comment>It is possible for the exit gate to eventually reach the gateopening state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:44 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;entry1.gateopened</formula>
+			<comment>It is possible for the entry gate to eventually reach the gateopened state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:49 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;exit1.gateopened</formula>
+			<comment>It is possible for the exit gate to eventually reach the gateopened state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:21:52 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula>LIVENESS</formula>
+			<comment>LIVENESS</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt;(car.parking &amp;&amp; (entry1.gateopening || entry0.gateopening))</formula>
+			<comment>It is possible for the car to be in the parking state while the entry gate is in the process of opening.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:42:38 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;(car.exiting &amp;&amp; exit1.gateopening)</formula>
+			<comment>It is possible for the car to be in the exiting state while the exit gate is in the process of opening.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:22:01 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;(car.block &amp;&amp; fine1.timeexceeded)</formula>
+			<comment>The conditrion where the car is blocked  and the fine is not paid yet so that automata is in timeexceeded</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:22:06 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;(car.finecleared &amp;&amp; fine1.nofine)</formula>
+			<comment>There exists a condition which is possible that fine is cleared and the fine automata is in nofine state</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:22:10 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula>UTILITY</formula>
+			<comment>UTILITY</comment>
+		</query>
+		<query>
+			<formula>A&lt;&gt; ((card==true || cash==true) imply ticket1.ticket)</formula>
+			<comment>If a card or cash is inserted for payment, a ticket will be issued</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 17:31:19 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A&lt;&gt; (ticket1.Inprocess imply ticket1.paymentdone)</formula>
+			<comment>If a car is waiting to pay, it will eventually have its payment processed.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:50:52 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A&lt;&gt; (car.parking imply car.exiting)</formula>
+			<comment>Once a car enters the parking state, it will eventually transition to the exiting state.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:49:36 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A&lt;&gt;(ticket1.paymentdone imply (car.parking || car1.parking))</formula>
+			<comment>If the payment process is ongoing (Inprocess), the car will eventually be in the parking state.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:52:07 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A&lt;&gt; (car.findParkingSpot imply car.parking)</formula>
+			<comment>If a car is finding the parking spot, it implies that the Car will eventually park.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:52:40 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (entry1.gateopened imply car.exiting)</formula>
+			<comment>If the entry gate is opened, the car will eventually exit.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 17:31:59 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (exit1.gateopened imply car.idle)</formula>
+			<comment>If the exit gate is opened, the car will eventually be in the start state.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 17:32:54 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (car.block &amp;&amp; fine1.timeexceeded imply car.finecleared)</formula>
+			<comment>If a car is blocked due to exceeding the parking time limit, it will eventually have its fine cleared.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 17:43:01 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula>MUTUAL EXCLUSION</formula>
+			<comment>MUTUAL EXCLUSION</comment>
+		</query>
+		<query>
+			<formula>A[]  ((ticket1.paymentdone &amp;&amp; occupiedspace ==0 &amp;&amp; car.parked==false &amp;&amp; car1.parked==false) imply ((car.start || car1.start) &amp;&amp; exit1.closedgate &amp;&amp; exit0.closedgate &amp;&amp; entry0.closedgate &amp;&amp; entry1.closedgate &amp;&amp; fine1.nofine  &amp;&amp; fine0.nofine))</formula>
+			<comment>If a car is getting a ticket, and no car is parked inside the parking, a car is in the start state, both gates are closed, and there's no fine.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 17:04:44 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] (car.carticket == car1.carticket) imply car.parked == false or car1.parked == false</formula>
+			<comment/>
+			<result outcome="success" type="quality" timestamp="2024-05-19 10:15:07 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula>SAFETY</formula>
+			<comment/>
+		</query>
+		<query>
+			<formula>A[] not (car.parking &amp;&amp; (entry0.closedgate &amp;&amp; entry1.closedgate))</formula>
+			<comment>A car cannot be parked if the entry gate is closed.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:53:06 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (card == true and change!=0)</formula>
+			<comment>it is not possible that a card is inserted and change is not zero</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:54:21 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (entry1.gateopened &amp;&amp; exit1.gateopened)</formula>
+			<comment>The entry and exit gate of the same spot can not be opened at the same time</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:54:37 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not ((fine1.timeexceeded || fine0.timeexceeded) &amp;&amp; car.exitgate &amp;&amp; car1.exitgate)</formula>
+			<comment>A car cannot be in the exit gate while simultaneously having an exceeded fine.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:56:24 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (car.exiting &amp;&amp; exit1.closedgate)</formula>
+			<comment>A car cannot be in the process of exiting if the exit gate is closed.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-13 12:24:25 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (car.block &amp;&amp; fine1.nofine &amp;&amp; fine0.nofine)</formula>
+			<comment>A car cannot be in a blocked state (fined) while simultaneously having no fine.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 15:59:39 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (car.block &amp;&amp; entry0.gateopened &amp;&amp; entry1.gateopened )</formula>
+			<comment>A car cannot be in a blocked state (fined) while simultaneously the parking gate is opened.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:01:32 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (car.parking and car.parked==true)</formula>
+			<comment>A car cannot be in the 'parking' location while simultaneously having its 'parked' variable set to true.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:01:43 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (pay.returnchange and change==0)</formula>
+			<comment>The system cannot be in the 'returnchange' state if the change amount is zero.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:01:51 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (pay.paymentprocessing and (cash==false and card==false))</formula>
+			<comment>The payment process cannot be in progress (Inprocess) if neither money nor card has been inserted.
+</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:02:01 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (cash==true and card==true)</formula>
+			<comment>It is not possible that cash and card are both inserted at the same time</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:04:29 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (car.currposition!=car.carticket and car.parking)</formula>
+			<comment>it is not possible that ticket specified spot does not match the car parking space number and the car is in parking state</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:04:23 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (car.carticket == car1.carticket &amp;&amp; car.parked==true &amp;&amp; car1.parked==true)</formula>
+			<comment>It is not possible for 2 cars to have the same ticket number</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:06:19 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] not (occupiedspace &gt; maxcapacity)
+</formula>
+			<comment>Occupied space can never be more than max capacity</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 16:47:30 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula/>
+			<comment/>
+		</query>
+		<query>
+			<formula>FAIRNESS</formula>
+			<comment>FAIRNESS</comment>
+		</query>
+		<query>
+			<formula>E&lt;&gt; (ticket1.Inprocess imply car.parked)
+</formula>
+			<comment>If the ticket process is in the 'returnchange' state, the car will get a chance to park eventually.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 23:46:25 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>E&lt;&gt;(car.exiting imply exit1.gateopened)
+</formula>
+			<comment>If a car is exiting, the exit gate will be open eventually.</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 17:53:36 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] ( car.block imply car.wait &gt; 60)
+</formula>
+			<comment>if a car is in a blocked state, then it must have been parking for more than 60 time units</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-18 23:44:59 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+		<query>
+			<formula>A[] (parked==true imply (car.park or car.block or car.finecleared or car.exiting))</formula>
+			<comment>if car is parked=true, it means that the car is either in parked state, or blocked state as it is overdue its time or it has paid is fine or lastly, it is exiting but has yet not exited</comment>
+			<result outcome="success" type="quality" timestamp="2024-05-14 20:07:54 +0500">
+				<option key="--diagnostic" value="0"/>
+			</result>
+		</query>
+	</queries>
+</nta>

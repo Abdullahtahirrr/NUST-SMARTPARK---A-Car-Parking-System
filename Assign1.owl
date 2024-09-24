@@ -1,0 +1,424 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#"
+     xml:base="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CorrespondsToSpace -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CorrespondsToSpace">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#acceptedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#acceptedBy">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Payment"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#containsSpace -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#containsSpace">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingLot"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#detectsPresenceIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#detectsPresenceIn">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Sensor"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#equippedWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#equippedWith">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Sensor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#getsTicket -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#getsTicket">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#User"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasPayment -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasPayment"/>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasTicket -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasTicket">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasType -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasType">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#IndoorParkingLot"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OutdoorParkingLot"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingLot"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasVehicleType -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasVehicleType">
+        <rdf:type rdf:resource="&owl;FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Car"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Motorcycle"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Vehicle"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#includesPayment -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#includesPayment">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Payment"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#issuedTo -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#issuedTo">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#User"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#makesPayment -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#makesPayment">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#User"/>
+        <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#occupiesSpace -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#occupiesSpace">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Vehicle"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#partOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#partOf">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingLot"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#usesParkingSpace -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#usesParkingSpace">
+        <rdfs:range rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#User"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasParkingStatus -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#hasParkingStatus">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Car -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Car">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Vehicle"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CompactSpace -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CompactSpace">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#HandicapSpace -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#HandicapSpace">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#IndoorParkingLot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#IndoorParkingLot">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingLot"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Motorcycle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Motorcycle">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Vehicle"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OutdoorParkingLot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OutdoorParkingLot">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingLot"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingLot -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingLot"/>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Payment -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Payment"/>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Sensor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Sensor"/>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#User -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#User"/>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Vehicle -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Vehicle"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Car1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Car1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Car"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CompactSpace1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CompactSpace1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CompactSpace"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CreditCardPayment -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CreditCardPayment">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Payment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#HandicapSpace1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#HandicapSpace1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#HandicapSpace"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#IndoorParkingLotB -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#IndoorParkingLotB">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#IndoorParkingLot"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#JohnDoe -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#JohnDoe">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#User"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#MobileWalletPayment -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#MobileWalletPayment">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Payment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#MotorCycle1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#MotorCycle1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Motorcycle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OccupancySensor1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OccupancySensor1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Sensor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OutdoorParkingLotA -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OutdoorParkingLotA">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#OutdoorParkingLot"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <hasParkingStatus>Occupied</hasParkingStatus>
+        <hasPayment rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#CreditCardPayment"/>
+        <hasPayment rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#MobileWalletPayment"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace2 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace2">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingSpace"/>
+        <hasParkingStatus>Vacant</hasParkingStatus>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingTicket1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#ParkingTicket1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/dipenpatel/ontologies/2024/2/untitled-ontology-3#Ticket"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+
